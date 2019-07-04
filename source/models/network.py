@@ -47,12 +47,14 @@ class Base_down_block(nn.Module):
 class Base_up_block(nn.Module):
     def __init__(self, in_channels, out_channels):
         super(Base_up_block, self).__init__()
-        self.block1 = Base_with_bn_block(in_channels, out_channels*2, 1, up=True)
+        self.block1 = Base_with_bn_block(in_channels, out_channels*2, 1, up=False)
         self.block2 = Base_with_bn_block(out_channels*2, out_channels, 3)
+        self.block3 = Base_with_bn_block(out_channels, out_channels, up=True)
     def forward(self, x1, x2):
         out = torch.cat([x1, x2], 1)
         out = self.block1(out)
         out = self.block2(out)
+        out = self.block3(out
         return out
 
 class UP_VGG(nn.Module):
